@@ -116,7 +116,7 @@ class Downloader():
                 self.log.info(layer['file_name'] + ' is already in the filesystem.')
 
     def download_threaded(self):
-        print 'THREADED'
+        pass
 
     def progress(self, downloaded, total):
         return round(float(downloaded) / float(total) * 100, 2)
@@ -139,6 +139,5 @@ file_paths_and_sizes = [
 file_system_structure = {'target': '/home/kalimaha/Desktop/MODIS', 'product': 'MOD13Q1', 'year': '2014', 'day': '001'}
 # file_system_structure = '/home/kalimaha/Desktop/MODIS'
 d = Downloader('MOdis', file_system_structure, file_paths_and_sizes)
-print d.target_dir
 # d = Downloader('MOdis', file_system_structure, file_paths_and_sizes, True)
 d.download()
