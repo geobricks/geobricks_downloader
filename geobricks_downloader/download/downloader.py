@@ -1,4 +1,5 @@
 import os
+import urllib2
 from importlib import import_module
 from types import DictType
 from geobricks_downloader.utils.filesystem import create_filesystem
@@ -78,23 +79,64 @@ class Downloader():
 
     def download_standard(self):
         for layer in self.file_paths_and_sizes:
-            self.log.info(layer)
+            download_size = 0
+            total_size = 0
+            block_sz=16384
             local_file = os.path.join(self.target_dir, layer['file_name'])
-            self.log.info(local_file)
+            if 'size' in layer and layer['size'] is not None:
+                total_size = layer['size']
+            else:
+                u = urllib2.urlopen(layer['file_path'])
+                meta = u.info()
+                total_size = int(meta.getheaders('Content-Length')[0])
+            allow_layer_download = True
+            try:
+                allow_layer_download = int(os.stat(local_file).st_size) < int(total_size)
+            except OSError:
+                pass
+            if allow_layer_download:
+                self.log.info('Downloading: ' + layer['file_name'])
+                u = urllib2.urlopen(layer['file_path'])
+                f = open(local_file, 'wb')
+                if not os.path.isfile(local_file) or os.stat(local_file).st_size < total_size:
+                    file_size_dl = 0
+                    while download_size < total_size:
+                        chunk = u.read(block_sz)
+                        if not buffer:
+                            break
+                        file_size_dl += len(chunk)
+                        f.write(chunk)
+                        download_size += len(chunk)
+                        self.log.info('Progress: ' + str(self.progress(download_size, total_size)))
+                        if download_size == total_size:
+                            break
+                f.close()
+                self.log.info(layer['file_name'] + ' downloaded.')
+            else:
+                self.log.info(layer['file_name'] + ' is already in the filesystem.')
 
     def download_threaded(self):
         print 'THREADED'
 
+    def progress(self, downloaded, total):
+        return round(float(downloaded) / float(total) * 100, 2)
+
 
 file_paths_and_sizes = [
     {
-        'size': '21340759',
+        'size': None,
         'label': 'H 22, V 05 (21.34 MB)',
-        'file_name': 'MOD13A2.A2010001.h22v05.005.2010028060252.hdf',
-        'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13A2/2010/001/MOD13A2.A2010001.h22v05.005.2010028060252.hdf'
+        'file_name': 'MOD13Q1.A2014001.h02v08.005.2014018082809.hdf',
+        'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13Q1/2014/001/MOD13Q1.A2014001.h02v08.005.2014018082809.hdf'
+    },
+    {
+        'size': None,
+        'label': None,
+        'file_name': 'MyMODIS.hdf',
+        'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13Q1/2014/001/MOD13Q1.A2014001.h02v09.005.2014018084818.hdf'
     }
 ]
-file_system_structure = {'target': '/home/kalimaha/Desktop/MODIS', 'product': 'MOD13Q1', 'year': '2014', 'day': '033'}
+file_system_structure = {'target': '/home/kalimaha/Desktop/MODIS', 'product': 'MOD13Q1', 'year': '2014', 'day': '001'}
 # file_system_structure = '/home/kalimaha/Desktop/MODIS'
 d = Downloader('MOdis', file_system_structure, file_paths_and_sizes)
 print d.target_dir
