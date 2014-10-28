@@ -16,3 +16,5 @@ file_system_structure = '/home/user/Desktop/MODIS'
 d = Downloader('modis', file_system_structure, file_paths_and_sizes)
 d.download()
 ```
+
+by default filename from ftp
