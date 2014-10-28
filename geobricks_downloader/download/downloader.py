@@ -25,6 +25,28 @@ class Downloader():
 
     def __init__(self, source, file_system_structure, file_paths_and_sizes, username=None, password=None):
 
+        """
+        @type source:                   String
+        @param source:                  e.g. 'modis', either lower or upper case.
+
+        @type file_system_structure:    String or Dict
+        @param file_system_structure:   This parameter can be either a String, representing the target directory for the
+                                        downloads (e.g. '/home/user/Desktop'), or a Dict, describing the file system
+                                        structure (e.g. {'target': '/home/kalimaha/Desktop/MODIS', 'product': 'MOD13Q1',
+                                        'year': '2014', 'day': '033'})
+
+        @type file_paths_and_sizes:     Array
+        @param file_paths_and_sizes:    Collection of objects containing the following fields: 'file_name', 'size',
+                                        'file_path', 'label'.
+
+        @type username:                 String
+        @param username:                Optional parameter.
+
+        @type password:                 String
+        @param password:                Optional parameter.
+
+        """
+
         # Store parameters.
         self.source = source.lower()
         self.file_paths_and_sizes = file_paths_and_sizes
@@ -55,7 +77,6 @@ file_system_structure = {'target': '/home/kalimaha/Desktop/MODIS', 'product': 'M
 # file_system_structure = '/home/kalimaha/Desktop/MODIS2'
 file_paths_and_sizes = [
     {
-        'target': '/home/kalimaha/Desktop/MODIS',
         'file_name': 'MOD13A2.A2010001.h22v05.005.2010028060252.hdf',
         'size': '21340759',
         'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13A2/2010/001/MOD13A2.A2010001.h22v05.005.2010028060252.hdf',
