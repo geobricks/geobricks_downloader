@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>geobricks_downloader.utils.filesystem</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="geobricks_downloader-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/geobricks/geobricks_downloader">Geobricks Downloader</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="geobricks_downloader-module.html">Package&nbsp;geobricks_downloader</a> ::
+        <a href="geobricks_downloader.utils-module.html">Package&nbsp;utils</a> ::
+        Module&nbsp;filesystem
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="geobricks_downloader.utils.filesystem-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="geobricks_downloader.utils.filesystem-module.html">Module geobricks_downloader.utils.filesystem</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="create_filesystem"></a><div id="create_filesystem-def"><a name="L4"></a><tt class="py-lineno"> 4</tt> <a class="py-toggle" href="#" id="create_filesystem-toggle" onclick="return toggle('create_filesystem');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="geobricks_downloader.utils.filesystem-module.html#create_filesystem">create_filesystem</a><tt class="py-op">(</tt><tt class="py-param">target_dir</tt><tt class="py-op">,</tt> <tt class="py-param">parameters</tt><tt class="py-op">,</tt> <tt class="py-param">data_provider_conf</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="create_filesystem-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="create_filesystem-expanded"><a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line">    <tt class="py-name">conf</tt> <tt class="py-op">=</tt> <tt class="py-name">data_provider_conf</tt><tt class="py-op">[</tt><tt class="py-string">'target'</tt><tt class="py-op">]</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line">    <tt class="py-name">final_path</tt> <tt class="py-op">=</tt> <tt id="link-0" class="py-name" targets="Variable geobricks_downloader.download.downloader.Downloader.target_dir=geobricks_downloader.download.downloader.Downloader-class.html#target_dir"><a title="geobricks_downloader.download.downloader.Downloader.target_dir" class="py-name" href="#" onclick="return doclink('link-0', 'target_dir', 'link-0');">target_dir</a></tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">exists</tt><tt class="py-op">(</tt><tt id="link-1" class="py-name"><a title="geobricks_downloader.download.downloader.Downloader.target_dir" class="py-name" href="#" onclick="return doclink('link-1', 'target_dir', 'link-0');">target_dir</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">        <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">makedirs</tt><tt class="py-op">(</tt><tt id="link-2" class="py-name"><a title="geobricks_downloader.download.downloader.Downloader.target_dir" class="py-name" href="#" onclick="return doclink('link-2', 'target_dir', 'link-0');">target_dir</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">conf</tt><tt class="py-op">[</tt><tt class="py-string">'folders'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">folder</tt> <tt class="py-keyword">in</tt> <tt class="py-name">conf</tt><tt class="py-op">[</tt><tt class="py-string">'folders'</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">            <tt class="py-name">final_path</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name" targets="Function geobricks_downloader.utils.filesystem.create_folder()=geobricks_downloader.utils.filesystem-module.html#create_folder"><a title="geobricks_downloader.utils.filesystem.create_folder" class="py-name" href="#" onclick="return doclink('link-3', 'create_folder', 'link-3');">create_folder</a></tt><tt class="py-op">(</tt><tt class="py-name">conf</tt><tt class="py-op">,</tt> <tt class="py-name">parameters</tt><tt class="py-op">,</tt> <tt class="py-name">folder</tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name"><a title="geobricks_downloader.download.downloader.Downloader.target_dir" class="py-name" href="#" onclick="return doclink('link-4', 'target_dir', 'link-0');">target_dir</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt class="py-name">sub_folders</tt> <tt class="py-op">=</tt> <tt class="py-name">data_provider_conf</tt><tt class="py-op">[</tt><tt class="py-string">'subfolders'</tt><tt class="py-op">]</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt class="py-name">bands</tt> <tt class="py-op">=</tt> <tt class="py-name">data_provider_conf</tt><tt class="py-op">[</tt><tt class="py-string">'bands'</tt><tt class="py-op">]</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">key</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sub_folders</tt><tt class="py-op">:</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-string">'output'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">key</tt><tt class="py-op">:</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">band</tt> <tt class="py-keyword">in</tt> <tt class="py-name">bands</tt><tt class="py-op">:</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">                <tt class="py-name">out_folder</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">final_path</tt><tt class="py-op">,</tt> <tt class="py-name">sub_folders</tt><tt class="py-op">[</tt><tt class="py-name">key</tt><tt class="py-op">]</tt> <tt class="py-op">+</tt> <tt class="py-string">'_'</tt> <tt class="py-op">+</tt> <tt class="py-name">band</tt><tt class="py-op">[</tt><tt class="py-string">'label'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">exists</tt><tt class="py-op">(</tt><tt class="py-name">out_folder</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">                    <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">makedirs</tt><tt class="py-op">(</tt><tt class="py-name">out_folder</tt><tt class="py-op">)</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">            <tt class="py-name">out_folder</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">final_path</tt><tt class="py-op">,</tt> <tt class="py-name">sub_folders</tt><tt class="py-op">[</tt><tt class="py-name">key</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">exists</tt><tt class="py-op">(</tt><tt class="py-name">out_folder</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">                <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">makedirs</tt><tt class="py-op">(</tt><tt class="py-name">out_folder</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line"> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">final_path</tt> </tt>
+</div><a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"> </tt>
+<a name="create_folder"></a><div id="create_folder-def"><a name="L28"></a><tt class="py-lineno">28</tt> <a class="py-toggle" href="#" id="create_folder-toggle" onclick="return toggle('create_folder');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="geobricks_downloader.utils.filesystem-module.html#create_folder">create_folder</a><tt class="py-op">(</tt><tt class="py-param">conf</tt><tt class="py-op">,</tt> <tt class="py-param">parameters</tt><tt class="py-op">,</tt> <tt class="py-param">folder</tt><tt class="py-op">,</tt> <tt class="py-param">root_folder</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="create_folder-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="create_folder-expanded"><a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">    <tt class="py-name">folder_name</tt> <tt class="py-op">=</tt> <tt class="py-name">folder</tt><tt class="py-op">[</tt><tt class="py-string">'folder_name'</tt><tt class="py-op">]</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-string">'{{'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">folder_name</tt> <tt class="py-keyword">and</tt> <tt class="py-string">'}}'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">folder_name</tt><tt class="py-op">:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">key</tt> <tt class="py-keyword">in</tt> <tt class="py-name">parameters</tt><tt class="py-op">:</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">folder</tt><tt class="py-op">[</tt><tt class="py-string">'folder_name'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-string">'{{'</tt> <tt class="py-op">+</tt> <tt class="py-name">key</tt> <tt class="py-op">+</tt> <tt class="py-string">'}}'</tt><tt class="py-op">:</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">                <tt class="py-name">folder_name</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">folder</tt><tt class="py-op">[</tt><tt class="py-string">'folder_name'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">'{{'</tt> <tt class="py-op">+</tt> <tt class="py-name">key</tt> <tt class="py-op">+</tt> <tt class="py-string">'}}'</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">parameters</tt><tt class="py-op">[</tt><tt class="py-name">key</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">    <tt class="py-name">root_folder</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">root_folder</tt><tt class="py-op">,</tt> <tt class="py-name">folder_name</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">path</tt><tt class="py-op">.</tt><tt class="py-name">exists</tt><tt class="py-op">(</tt><tt class="py-name">root_folder</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">        <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">makedirs</tt><tt class="py-op">(</tt><tt class="py-name">root_folder</tt><tt class="py-op">)</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-string">'folders'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">folder</tt> <tt class="py-keyword">and</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">folder</tt><tt class="py-op">[</tt><tt class="py-string">'folders'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">sub_folder</tt> <tt class="py-keyword">in</tt> <tt class="py-name">folder</tt><tt class="py-op">[</tt><tt class="py-string">'folders'</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">            <tt class="py-name">root_folder</tt> <tt class="py-op">=</tt> <tt id="link-5" class="py-name"><a title="geobricks_downloader.utils.filesystem.create_folder" class="py-name" href="#" onclick="return doclink('link-5', 'create_folder', 'link-3');">create_folder</a></tt><tt class="py-op">(</tt><tt class="py-name">conf</tt><tt class="py-op">,</tt> <tt class="py-name">parameters</tt><tt class="py-op">,</tt> <tt class="py-name">sub_folder</tt><tt class="py-op">,</tt> <tt class="py-name">root_folder</tt><tt class="py-op">)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">root_folder</tt> </tt>
+</div><a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="geobricks_downloader-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/geobricks/geobricks_downloader">Geobricks Downloader</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Oct 29 16:39:37 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
