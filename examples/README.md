@@ -12,7 +12,7 @@ file_paths_and_sizes = [
         'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13Q1/2014/001/MOD13Q1.A2014001.h02v08.005.2014018082809.hdf'
     }
 ]
-file_system_structure = '/home/user/Desktop/MODIS'
+file_system_structure = '/home/user/Desktop'
 d = Downloader('modis', file_system_structure, file_paths_and_sizes)
 d.download()
 ```
@@ -34,7 +34,7 @@ country = '8'
 layers_to_be_downloaded = list_layers_countries_subset(product, year, day, country)
 
 # Target folder: MODIS layers will be downloaded here
-target = '/home/user/Desktop/MODIS'
+target = '/home/user/Desktop'
 
 # Run the downloader
 Downloader('modis', target, layers_to_be_downloaded).download()
