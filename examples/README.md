@@ -16,6 +16,13 @@ target = '/home/user/Desktop'
 d = Downloader('modis', target, layers_to_be_downloaded)
 d.download()
 ```
+The `layers_to_be_downloaded` variable is a Python array of Dict, each one must have the following structure:
+```python
+{
+    'file_name': 'my_modis_tile.hdf',
+    'file_path': 'ftp://path/to/your/resource'
+}
+```
 Download MODIS tiles with the Geobricks MODIS plug-in
 -----------------------------------------------------
 The Geobricks MODIS plug-in is available on [GitHub](https://github.com/geobricks/geobricks_modis) and on [PyPi](https://pypi.python.org/pypi/GeobricksMODIS). The plug-in provides methods to filter the MODIS FTP based on the product code, the datetime and the geographic area. The following example shows how to download the tiles covering Angola for the MOD13A2 product on January 1st 2010 through the use of the Geobricks MODIS plug-in.
