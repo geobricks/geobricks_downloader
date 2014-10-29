@@ -39,3 +39,4 @@ target = '/home/user/Desktop/MODIS'
 # Run the downloader
 Downloader('modis', target, layers_to_be_downloaded).download()
 ```
+There are several ways to filter the MODIS FTP, please refer to the [Geobricks MODIS plug-in example page](https://github.com/geobricks/geobricks_modis/tree/master/examples) for further details.
