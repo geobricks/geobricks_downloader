@@ -6,14 +6,14 @@ Download MODIS tiles
 from geobricks_downloader.download.downloader import Downloader
 
 
-file_paths_and_sizes = [
+layers_to_be_downloaded = [
     {
         'file_name': 'my_modis_tile.hdf',
         'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13Q1/2014/001/MOD13Q1.A2014001.h02v08.005.2014018082809.hdf'
     }
 ]
-file_system_structure = '/home/user/Desktop'
-d = Downloader('modis', file_system_structure, file_paths_and_sizes)
+target = '/home/user/Desktop'
+d = Downloader('modis', target, layers_to_be_downloaded)
 d.download()
 ```
 Download MODIS tiles with the Geobricks MODIS plug-in
@@ -36,8 +36,11 @@ layers_to_be_downloaded = list_layers_countries_subset(product, year, day, count
 # Target folder: MODIS layers will be downloaded here
 target = '/home/user/Desktop'
 
+# Initiate the downloader
+my_downloader = Downloader('modis', target, layers_to_be_downloaded)
+
 # Run the downloader
-Downloader('modis', target, layers_to_be_downloaded).download()
+my_downloader.download()
 ```
 This example produces an output similar to the following:
 ```
