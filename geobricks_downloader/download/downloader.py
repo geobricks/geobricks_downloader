@@ -107,8 +107,8 @@ class Downloader():
                         file_size_dl += len(chunk)
                         f.write(chunk)
                         download_size += len(chunk)
-                        self.log.info('Progress: ' + str(self.progress(download_size, total_size)))
-                        if download_size == total_size:
+                        self.log.info('Progress: ' + str(self.progress(download_size, total_size)) + ' (' + str(download_size) + ' / ' + str(total_size) + ')')
+                        if float(download_size) == float(total_size):
                             break
                 f.close()
                 self.log.info(layer['file_name'] + ' downloaded.')
@@ -120,24 +120,3 @@ class Downloader():
 
     def progress(self, downloaded, total):
         return round(float(downloaded) / float(total) * 100, 2)
-
-
-file_paths_and_sizes = [
-    {
-        'size': None,
-        'label': 'H 22, V 05 (21.34 MB)',
-        'file_name': 'MOD13Q1.A2014001.h02v08.005.2014018082809.hdf',
-        'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13Q1/2014/001/MOD13Q1.A2014001.h02v08.005.2014018082809.hdf'
-    },
-    {
-        'size': None,
-        'label': None,
-        'file_name': 'MyMODIS.hdf',
-        'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13Q1/2014/001/MOD13Q1.A2014001.h02v09.005.2014018084818.hdf'
-    }
-]
-file_system_structure = {'target': '/home/kalimaha/Desktop/MODIS', 'product': 'MOD13Q1', 'year': '2014', 'day': '001'}
-# file_system_structure = '/home/kalimaha/Desktop/MODIS'
-d = Downloader('MOdis', file_system_structure, file_paths_and_sizes)
-# d = Downloader('MOdis', file_system_structure, file_paths_and_sizes, True)
-d.download()
