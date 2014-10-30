@@ -26,29 +26,33 @@ class Downloader():
     config = None
     target_dir = None
 
-    def __init__(self, source, file_system_structure, file_paths_and_sizes, threaded=False, username=None, password=None):
+    def __init__(self, source, file_system_structure, file_paths_and_sizes,
+                 threaded=False, block_size=16384, username=None, password=None):
 
         """
-        @type source:                   String
+        @type source:                   str
         @param source:                  e.g. 'modis', either lower or upper case.
 
-        @type file_system_structure:    String | Dict
+        @type file_system_structure:    str | dict
         @param file_system_structure:   This parameter can be either a String, representing the target directory for the
                                         downloads (e.g. '/home/user/Desktop'), or a Dict, describing the file system
                                         structure (e.g. {'target': '/home/kalimaha/Desktop/MODIS', 'product': 'MOD13Q1',
                                         'year': '2014', 'day': '033'})
 
-        @type file_paths_and_sizes:     Array
+        @type file_paths_and_sizes:     collection
         @param file_paths_and_sizes:    Collection of objects containing the following fields: 'file_name', 'size',
                                         'file_path', 'label'.
 
-        @type threaded:                 Boolean
+        @type threaded:                 bool
         @param threaded:                Run the downloader in multiple or single thread mode.
 
-        @type username:                 String
+        @type block_size:               float
+        @param block_size:              The remote file is downloaded in chunk, each one of 'block_size' size.
+
+        @type username:                 str
         @param username:                Optional parameter.
 
-        @type password:                 String
+        @type password:                 str
         @param password:                Optional parameter.
 
         """
@@ -60,6 +64,7 @@ class Downloader():
         self.username = username
         self.password = password
         self.threaded = threaded
+        self.block_size = block_size
 
         # Load configuration
         module_name = 'geobricks_' + self.source + '.config.' + self.source + '_config'
@@ -80,8 +85,6 @@ class Downloader():
     def download_standard(self):
         for layer in self.file_paths_and_sizes:
             download_size = 0
-            total_size = 0
-            block_sz=16384
             local_file = os.path.join(self.target_dir, layer['file_name'])
             if 'size' in layer and layer['size'] is not None:
                 total_size = layer['size']
@@ -101,13 +104,14 @@ class Downloader():
                 if not os.path.isfile(local_file) or os.stat(local_file).st_size < total_size:
                     file_size_dl = 0
                     while download_size < total_size:
-                        chunk = u.read(block_sz)
+                        chunk = u.read(self.block_size)
                         if not buffer:
                             break
                         file_size_dl += len(chunk)
                         f.write(chunk)
                         download_size += len(chunk)
-                        self.log.info('Progress: ' + str(self.progress(download_size, total_size)) + ' (' + str(download_size) + ' / ' + str(total_size) + ')')
+                        self.log.info('Progress: ' + str(progress(download_size, total_size)) +
+                                      ' (' + str(download_size) + ' / ' + str(total_size) + ')')
                         if float(download_size) == float(total_size):
                             break
                 f.close()
@@ -118,5 +122,6 @@ class Downloader():
     def download_threaded(self):
         pass
 
-    def progress(self, downloaded, total):
-        return round(float(downloaded) / float(total) * 100, 2)
+
+def progress(self, downloaded, total):
+    return round(float(downloaded) / float(total) * 100, 2)
