@@ -28,19 +28,14 @@ exit_flags = {}
 
 class DownloadsThreadManager(Thread):
 
-    def __init__(self, uid, source, target_dir, file_paths_and_sizes, filesystem_structure):
+    def __init__(self, uid, target_dir, file_paths_and_sizes):
 
         Thread.__init__(self)
 
-        self.source = source
         self.file_paths_and_sizes = file_paths_and_sizes
-        self.filesystem_structure = filesystem_structure
         self.target_dir = target_dir
         self.uid = uid
         self.log = log.logger(self.__class__.__name__)
-
-        mod = import_module('pgeo' + source.lower() + '.config.' + source.lower() + '_config')
-        data_provider_conf = getattr(mod, 'config')
 
     def run(self):
         t = Timer(1, self.start_manager)
