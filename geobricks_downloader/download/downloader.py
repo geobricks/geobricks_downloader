@@ -2,6 +2,7 @@ import os
 import urllib2
 from importlib import import_module
 from types import DictType
+from geobricks_downloader.download.downloads_thread_manager import DownloadsThreadManager
 from geobricks_downloader.utils.filesystem import create_filesystem
 from geobricks_downloader.utils import log
 
@@ -120,7 +121,7 @@ class Downloader():
                 self.log.info(layer['file_name'] + ' is already in the filesystem.')
 
     def download_threaded(self):
-        pass
+        DownloadsThreadManager('uid', self.target_dir, self.file_paths_and_sizes).start()
 
 
 def progress(self, downloaded, total):

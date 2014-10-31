@@ -54,7 +54,7 @@ class DownloadsThreadManager(Thread):
         threads = []
 
         for thread_name in thread_list:
-            thread = DownloadThread(self.uid, self.source, thread_name, work_queue, queue_lock, self.target_dir)
+            thread = DownloadThread(self.uid, thread_name, work_queue, queue_lock, self.target_dir)
             thread.start()
             threads.append(thread)
 
@@ -82,7 +82,7 @@ class DownloadThread(Thread):
     total_size = 0
     download_size = 0
 
-    def __init__(self, uid, source, thread_name, queue, queue_lock, target_dir, block_sz=16384):
+    def __init__(self, uid, thread_name, queue, queue_lock, target_dir, block_sz=16384):
 
         Thread.__init__(self)
 
@@ -90,7 +90,6 @@ class DownloadThread(Thread):
         self.queue = queue
         self.queue_lock = queue_lock
         self.block_sz = block_sz
-        self.source = source
         self.target_dir = target_dir
         self.uid = uid
         self.log = log.logger(self.__class__.__name__)
@@ -136,6 +135,7 @@ class DownloadThread(Thread):
                     multi_progress_map[self.uid][self.file_name]['download_size'] = 0
 
                     if not os.path.isfile(local_file) or os.stat(local_file).st_size < self.total_size:
+                        self.log.info(self.file_name + ' download start.')
                         file_size_dl = 0
                         while self.download_size < self.total_size:
                             chunk = u.read(self.block_sz)
@@ -145,10 +145,13 @@ class DownloadThread(Thread):
                             f.write(chunk)
                             self.download_size += len(chunk)
                             self.update_progress_map()
+                            self.log.info(self.thread_name + ' is downloading ' + self.file_name)
+                            self.log.info('Download progress: ' + str(multi_progress_map[self.uid][self.file_name]['progress']) + '%')
                             if float(self.download_size) == float(self.total_size):
                                 break
 
                     multi_progress_map[self.uid][self.file_name]['status'] = 'COMPLETE'
+                    self.log.info(self.file_name + ' download complete.')
                     f.close()
 
                 else:
@@ -165,7 +168,6 @@ class DownloadThread(Thread):
 
     def update_progress_map(self):
         multi_progress_map[self.uid][self.file_name]['download_size'] = self.download_size
-        multi_progress_map[self.uid][self.file_name]['progress'] = float('{0:.2f}'.format(float(multi_progress_map[self.uid][self.file_name]['download_size']) / float(multi_progress_map[self.uid][self.file_name]['total_size']) * 100))
         multi_progress_map[self.uid][self.file_name]['progress'] = self.percent_done()
         multi_progress_map[self.uid][self.file_name]['status'] = 'DOWNLOADING'
-        multi_progress_map[self.uid][self.file_name]['key'] = self.key
+        multi_progress_map[self.uid][self.file_name]['key'] = self.uid

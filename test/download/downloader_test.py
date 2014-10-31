@@ -15,4 +15,5 @@ layers_to_be_downloaded = list_layers_countries_subset(product, year, day, count
 target = '/home/kalimaha/Desktop'
 
 # Run the downloader
-Downloader('modis', target, layers_to_be_downloaded).download()
+# Downloader('modis', target, layers_to_be_downloaded).download()
+Downloader('modis', target, layers_to_be_downloaded, True).download()
