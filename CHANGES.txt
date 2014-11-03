@@ -1,1 +1,2 @@
 v0.1.0, 29-10-2014 -- Initial release.
+v0.1.1, 03-11-2014 -- Multi-threading download.
