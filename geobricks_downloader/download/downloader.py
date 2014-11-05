@@ -84,6 +84,7 @@ class Downloader():
         return self.download_threaded() if self.threaded else self.download_standard()
 
     def download_standard(self):
+        downloaded_layers = []
         for layer in self.file_paths_and_sizes:
             download_size = 0
             local_file = os.path.join(self.target_dir, layer['file_name'])
@@ -111,18 +112,21 @@ class Downloader():
                         file_size_dl += len(chunk)
                         f.write(chunk)
                         download_size += len(chunk)
-                        self.log.info('Progress: ' + str(progress(download_size, total_size)) +
-                                      ' (' + str(download_size) + ' / ' + str(total_size) + ')')
+                        self.log.info('Progress: ' + str(progress(download_size, total_size)))
                         if float(download_size) == float(total_size):
                             break
                 f.close()
                 self.log.info(layer['file_name'] + ' downloaded.')
             else:
                 self.log.info(layer['file_name'] + ' is already in the filesystem.')
+            downloaded_layers.append(local_file)
+        return downloaded_layers
 
     def download_threaded(self):
-        DownloadsThreadManager('uid', self.target_dir, self.file_paths_and_sizes).start()
+        mgr = DownloadsThreadManager('uid', self.target_dir, self.file_paths_and_sizes)
+        mgr.start()
+        return mgr.downloaded_files
 
 
-def progress(self, downloaded, total):
+def progress(downloaded, total):
     return round(float(downloaded) / float(total) * 100, 2)

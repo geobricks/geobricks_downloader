@@ -6,7 +6,7 @@ from geobricks_modis.core.modis_core import list_layers_countries_subset
 product = 'MCD12Q1'
 year = '2001'
 day = '001'
-country = '0'
+country = 'CY'
 
 # Get the list of layers through the Geobricks MODIS plug-in
 layers_to_be_downloaded = list_layers_countries_subset(product, year, day, country)
@@ -15,4 +15,7 @@ layers_to_be_downloaded = list_layers_countries_subset(product, year, day, count
 target = {'target': '/home/kalimaha/Desktop/MODIS', 'product': product, 'year': year, 'day': day}
 
 # Run the downloader
-Downloader('modis', target, layers_to_be_downloaded, True).download()
+my_downloader = Downloader('modis', target, layers_to_be_downloaded, True)
+downloaded_layers = my_downloader.download()
+for layer in downloaded_layers:
+    print layer

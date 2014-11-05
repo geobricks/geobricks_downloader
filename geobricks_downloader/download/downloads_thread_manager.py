@@ -28,19 +28,30 @@ exit_flags = {}
 
 class DownloadsThreadManager(Thread):
 
+    file_paths_and_sizes = None
+    target_dir = None
+    uid = None
+    downloaded_files = []
+
     def __init__(self, uid, target_dir, file_paths_and_sizes):
 
+        # Initiate the thread.
         Thread.__init__(self)
 
+        # Store parameters
         self.file_paths_and_sizes = file_paths_and_sizes
         self.target_dir = target_dir
         self.uid = uid
         self.log = log.logger(self.__class__.__name__)
 
+        # Store local file names
+        self.downloaded_files = []
+        for layer in self.file_paths_and_sizes:
+            self.downloaded_files.append(os.path.join(self.target_dir, layer['file_name']))
+
     def run(self):
         t = Timer(1, self.start_manager)
         t.start()
-        return self.target_dir
 
     def start_manager(self):
 
