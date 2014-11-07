@@ -1,2 +1,5 @@
 v0.1.0, 29-10-2014 -- Initial release.
 v0.1.1, 03-11-2014 -- Multi-threading download.
+v0.1.2, 07-11-2014 -- All the downloads are managed by the Downloads Thread Manager that can run single or multi threaded.
+                      Function to monitor the download progress added.
+                      The download function returns a list of the files that WILL be downloaded.
