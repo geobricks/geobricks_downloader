@@ -1,19 +1,14 @@
 import os
-import uuid
 import time
 import Queue
 import urllib2
 from threading import Lock
 from threading import Timer
 from threading import Thread
-from importlib import import_module
 from geobricks_downloader.utils import log
 
 
-# thread_manager_processes = {}
-multi_progress_map = {}
-# threads_map_key = 'FENIX'
-# log = log.logger('download_threads_manager.py')
+progress_map = {}
 out_template = {
     'download_size': 0,
     'layer_name': 'unknown',
@@ -32,8 +27,9 @@ class DownloadsThreadManager(Thread):
     target_dir = None
     uid = None
     downloaded_files = []
+    threaded = True
 
-    def __init__(self, uid, target_dir, file_paths_and_sizes):
+    def __init__(self, uid, target_dir, file_paths_and_sizes, threaded=False):
 
         # Initiate the thread.
         Thread.__init__(self)
@@ -43,6 +39,7 @@ class DownloadsThreadManager(Thread):
         self.target_dir = target_dir
         self.uid = uid
         self.log = log.logger(self.__class__.__name__)
+        self.threaded = threaded
 
         # Store local file names
         self.downloaded_files = []
@@ -59,7 +56,11 @@ class DownloadsThreadManager(Thread):
 
         self.log.info('Downloads Thread Manager started.')
 
-        thread_list = ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo', 'Foxtrot', 'Golf', 'Hotel', 'India', 'Juliet']
+        if self.threaded is True:
+            thread_list = ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo', 'Foxtrot', 'Golf', 'Hotel', 'India', 'Juliet']
+        else:
+            thread_list = ['Alpha']
+
         queue_lock = Lock()
         work_queue = Queue.Queue(len(self.file_paths_and_sizes))
         threads = []
@@ -83,6 +84,12 @@ class DownloadsThreadManager(Thread):
             t.join()
 
         self.log.info('Downloads Thread Manager done.')
+
+    def progress(self, filename):
+        try:
+            return progress_map[self.uid][filename]
+        except KeyError, e:
+            pass
 
 
 class DownloadThread(Thread):
@@ -118,9 +125,9 @@ class DownloadThread(Thread):
                 self.file_path = self.file_obj['file_path']
                 self.download_size = 0
 
-                if self.uid not in multi_progress_map:
-                    multi_progress_map[self.uid] = {}
-                multi_progress_map[self.uid][self.file_name] = {}
+                if self.uid not in progress_map:
+                    progress_map[self.uid] = {}
+                progress_map[self.uid][self.file_name] = {}
 
                 self.queue_lock.release()
 
@@ -142,8 +149,8 @@ class DownloadThread(Thread):
                     u = urllib2.urlopen(self.file_path)
                     f = open(local_file, 'wb')
 
-                    multi_progress_map[self.uid][self.file_name]['total_size'] = self.total_size
-                    multi_progress_map[self.uid][self.file_name]['download_size'] = 0
+                    progress_map[self.uid][self.file_name]['total_size'] = self.total_size
+                    progress_map[self.uid][self.file_name]['download_size'] = 0
 
                     if not os.path.isfile(local_file) or os.stat(local_file).st_size < self.total_size:
                         self.log.info(self.file_name + ' download start.')
@@ -156,18 +163,18 @@ class DownloadThread(Thread):
                             f.write(chunk)
                             self.download_size += len(chunk)
                             self.update_progress_map()
-                            self.log.info(self.thread_name + ' is downloading ' + self.file_name)
-                            self.log.info('Download progress: ' + str(multi_progress_map[self.uid][self.file_name]['progress']) + '%')
                             if float(self.download_size) == float(self.total_size):
                                 break
 
-                    multi_progress_map[self.uid][self.file_name]['status'] = 'COMPLETE'
+                    progress_map[self.uid][self.file_name]['status'] = 'COMPLETE'
                     self.log.info(self.file_name + ' download complete.')
                     f.close()
 
                 else:
-                    multi_progress_map[self.uid][self.file_name]['download_size'] = self.total_size
-                    multi_progress_map[self.uid][self.file_name]['progress'] = 100
+                    progress_map[self.uid][self.file_name]['status'] = 'COMPLETE'
+                    progress_map[self.uid][self.file_name]['progress'] = 100
+                    progress_map[self.uid][self.file_name]['download_size'] = self.total_size
+                    self.log.info(self.file_name + ' download complete.')
 
             else:
                 self.queue_lock.release()
@@ -178,7 +185,7 @@ class DownloadThread(Thread):
         return float('{0:.2f}'.format(float(self.download_size) / float(self.total_size) * 100))
 
     def update_progress_map(self):
-        multi_progress_map[self.uid][self.file_name]['download_size'] = self.download_size
-        multi_progress_map[self.uid][self.file_name]['progress'] = self.percent_done()
-        multi_progress_map[self.uid][self.file_name]['status'] = 'DOWNLOADING'
-        multi_progress_map[self.uid][self.file_name]['key'] = self.uid
+        progress_map[self.uid][self.file_name]['download_size'] = self.download_size
+        progress_map[self.uid][self.file_name]['progress'] = self.percent_done()
+        progress_map[self.uid][self.file_name]['status'] = 'DOWNLOADING'
+        progress_map[self.uid][self.file_name]['key'] = self.uid

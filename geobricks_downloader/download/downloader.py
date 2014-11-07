@@ -1,10 +1,9 @@
-import os
-import urllib2
-from importlib import import_module
+import uuid
 from types import DictType
-from geobricks_downloader.download.downloads_thread_manager import DownloadsThreadManager
-from geobricks_downloader.utils.filesystem import create_filesystem
+from importlib import import_module
 from geobricks_downloader.utils import log
+from geobricks_downloader.utils.filesystem import create_filesystem
+from geobricks_downloader.download.downloads_thread_manager import DownloadsThreadManager
 
 
 class Downloader():
@@ -26,6 +25,7 @@ class Downloader():
     source_type = 'FTP'
     config = None
     target_dir = None
+    download_manager = None
 
     def __init__(self, source, file_system_structure, file_paths_and_sizes,
                  threaded=False, block_size=16384, username=None, password=None):
@@ -76,57 +76,15 @@ class Downloader():
         self.log = log.logger(self.__class__.__name__)
         self.source_type = self.config['source']['type']
         self.target_dir = file_system_structure
+        self.uuid = str(uuid.uuid4())
         if type(file_system_structure) is DictType:
             self.target_dir = file_system_structure['target']
             self.target_dir = create_filesystem(self.target_dir, self.file_system_structure, self.config)
 
     def download(self):
-        return self.download_threaded() if self.threaded else self.download_standard()
+        self.download_manager = DownloadsThreadManager(self.uuid, self.target_dir, self.file_paths_and_sizes, self.threaded)
+        self.download_manager.start()
+        return self.download_manager.downloaded_files
 
-    def download_standard(self):
-        downloaded_layers = []
-        for layer in self.file_paths_and_sizes:
-            download_size = 0
-            local_file = os.path.join(self.target_dir, layer['file_name'])
-            if 'size' in layer and layer['size'] is not None:
-                total_size = layer['size']
-            else:
-                u = urllib2.urlopen(layer['file_path'])
-                meta = u.info()
-                total_size = int(meta.getheaders('Content-Length')[0])
-            allow_layer_download = True
-            try:
-                allow_layer_download = int(os.stat(local_file).st_size) < int(total_size)
-            except OSError:
-                pass
-            if allow_layer_download:
-                self.log.info('Downloading: ' + layer['file_name'])
-                u = urllib2.urlopen(layer['file_path'])
-                f = open(local_file, 'wb')
-                if not os.path.isfile(local_file) or os.stat(local_file).st_size < total_size:
-                    file_size_dl = 0
-                    while download_size < total_size:
-                        chunk = u.read(self.block_size)
-                        if not buffer:
-                            break
-                        file_size_dl += len(chunk)
-                        f.write(chunk)
-                        download_size += len(chunk)
-                        self.log.info('Progress: ' + str(progress(download_size, total_size)))
-                        if float(download_size) == float(total_size):
-                            break
-                f.close()
-                self.log.info(layer['file_name'] + ' downloaded.')
-            else:
-                self.log.info(layer['file_name'] + ' is already in the filesystem.')
-            downloaded_layers.append(local_file)
-        return downloaded_layers
-
-    def download_threaded(self):
-        mgr = DownloadsThreadManager('uid', self.target_dir, self.file_paths_and_sizes)
-        mgr.start()
-        return mgr.downloaded_files
-
-
-def progress(downloaded, total):
-    return round(float(downloaded) / float(total) * 100, 2)
+    def progress(self, filename):
+        return self.download_manager.progress(filename)
