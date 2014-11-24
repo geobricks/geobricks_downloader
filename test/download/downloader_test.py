@@ -5,10 +5,10 @@ from geobricks_modis.core.modis_core import list_layers_countries_subset
 
 
 # Filters
-product = 'MOD13A3'
-year = '2001'
+product = 'MOD13A2'
+year = '2014'
 day = '001'
-country = 'IT'
+country = 'PT'
 
 # Get the list of layers through the Geobricks MODIS plug-in
 layers_to_be_downloaded = list_layers_countries_subset(product, year, day, country)
