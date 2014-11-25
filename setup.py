@@ -11,7 +11,7 @@ setup(
     long_description=open('README.md').read(),
     description='Core functionalities for geospatial data download.',
     install_requires=[
-        'geobricksmodis'
+        'flask'
     ],
     url='http://pypi.python.org/pypi/GeobricksDownloader/'
 )

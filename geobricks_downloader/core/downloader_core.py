@@ -1,9 +1,9 @@
 import uuid
 from types import DictType
 from importlib import import_module
-from geobricks_downloader.utils import log
-from geobricks_downloader.utils.filesystem import create_filesystem
-from geobricks_downloader.download.downloads_thread_manager import DownloadsThreadManager
+from geobricks_downloader.core import log
+from geobricks_downloader.core.filesystem import create_filesystem
+from geobricks_downloader.core.downloads_thread_manager import DownloadsThreadManager
 
 
 class Downloader():

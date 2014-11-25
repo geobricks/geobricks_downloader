@@ -1,6 +1,4 @@
-import time
-import sched
-from geobricks_downloader.download.downloader import Downloader
+from geobricks_downloader.core.downloader_core import Downloader
 from geobricks_modis.core.modis_core import list_layers_countries_subset
 
 

@@ -5,7 +5,7 @@ import urllib2
 from threading import Lock
 from threading import Timer
 from threading import Thread
-from geobricks_downloader.utils import log
+from geobricks_downloader.core import log
 
 
 progress_map = {}
