@@ -14,6 +14,7 @@ layers_to_be_downloaded = list_layers_countries_subset(product, year, day, count
 # Target folder: MODIS layers will be downloaded here
 target_root = '/home/kalimaha/Desktop/MODIS'
 file_system_structure = {'product': product, 'year': year, 'day': day}
+# file_system_structure = None
 
 # Run the downloader
 my_downloader = Downloader('modis', target_root, file_system_structure, layers_to_be_downloaded, True)

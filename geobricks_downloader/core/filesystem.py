@@ -10,12 +10,12 @@ def create_filesystem(target_dir, parameters, data_provider_conf):
 
     # Create additional file system structure, if provided
     try:
-        conf = data_provider_conf['target']
+        conf = data_provider_conf['common_settings']['target']
         if len(conf['folders']) > 0:
             for folder in conf['folders']:
                 final_path = create_folder(conf, parameters, folder, target_dir)
-        sub_folders = data_provider_conf['subfolders']
-        bands = data_provider_conf['bands']
+        sub_folders = data_provider_conf['common_settings']['subfolders']
+        bands = data_provider_conf['common_settings']['bands']
         for key in sub_folders:
             if 'output' in key:
                 for band in bands:
@@ -26,8 +26,13 @@ def create_filesystem(target_dir, parameters, data_provider_conf):
                 out_folder = os.path.join(final_path, sub_folders[key])
                 if not os.path.exists(out_folder):
                     os.makedirs(out_folder)
+
+    # Otherwise create the file system according to the user parameters
     except KeyError:
-        pass
+        for key in parameters:
+            final_path = os.path.join(final_path, parameters[key])
+            if not os.path.exists(final_path):
+                os.makedirs(final_path)
 
     return final_path
 
@@ -37,11 +42,7 @@ def create_folder(conf, parameters, folder, root_folder):
     if '{{' in folder_name and '}}' in folder_name:
         for key in parameters:
             if str(folder['folder_name']) == '{{' + key + '}}':
-                print key
-                print str(parameters[key])
                 folder_name = str(folder['folder_name']).replace('{{' + key + '}}', str(parameters[key]))
-                print folder_name
-                print
     root_folder = os.path.join(root_folder, folder_name)
     if not os.path.exists(root_folder):
         os.makedirs(root_folder)

@@ -3,9 +3,9 @@ import uuid
 from importlib import import_module
 from geobricks_downloader.core import log
 from geobricks_downloader.core.utils import dict_merge
+from geobricks_downloader.config.downloader_config import config
 from geobricks_downloader.core.filesystem import create_filesystem
 from geobricks_downloader.core.downloads_thread_manager import DownloadsThreadManager
-from geobricks_downloader.config.downloader_config import config
 
 
 class Downloader():
@@ -83,9 +83,10 @@ class Downloader():
         self.log = log.logger(self.__class__.__name__)
         self.source_type = self.config['source']['type']
         self.target_dir = self.target_root
+        self.target_dir = create_filesystem(self.target_dir, self.file_system_structure, self.config)
         self.uuid = str(uuid.uuid4())
-        if file_system_structure is not None:
-            self.target_dir = create_filesystem(self.target_dir, self.file_system_structure, self.config)
+        # if file_system_structure is not None:
+        #     self.target_dir = create_filesystem(self.target_dir, self.file_system_structure, self.config)
 
     def download(self):
         self.download_manager = DownloadsThreadManager(self.uuid, self.target_dir, self.file_paths_and_sizes, self.threaded)

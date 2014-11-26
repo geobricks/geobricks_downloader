@@ -36,10 +36,11 @@ def discovery():
     ]
 
     # Target folder: MODIS layers will be downloaded here
-    target = '/home/user/Desktop'
+    target_root = '/home/kalimaha/Desktop/MODIS'
+    file_system_structure = {'product': product, 'year': year, 'day': day}
 
     # Initiate the downloader
-    my_downloader = Downloader('modis', None, layers_to_be_downloaded)
+    my_downloader = Downloader('modis', target_root, file_system_structure, layers_to_be_downloaded)
 
     # Run the downloader
     my_downloader.download()
