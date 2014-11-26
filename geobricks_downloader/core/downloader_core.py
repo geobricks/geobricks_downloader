@@ -83,10 +83,15 @@ class Downloader():
         self.log = log.logger(self.__class__.__name__)
         self.source_type = self.config['source']['type']
         self.target_dir = self.target_root
+
+        if self.target_dir is None:
+            try:
+                self.target_dir = config['common_settings']['target_root']
+            except KeyError:
+                raise Exception('Please provide the target folder.')
+
         self.target_dir = create_filesystem(self.target_dir, self.file_system_structure, self.config)
         self.uuid = str(uuid.uuid4())
-        # if file_system_structure is not None:
-        #     self.target_dir = create_filesystem(self.target_dir, self.file_system_structure, self.config)
 
     def download(self):
         self.download_manager = DownloadsThreadManager(self.uuid, self.target_dir, self.file_paths_and_sizes, self.threaded)
