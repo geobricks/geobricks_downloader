@@ -1,9 +1,11 @@
 import uuid
-from types import DictType
+
 from importlib import import_module
 from geobricks_downloader.core import log
+from geobricks_downloader.core.utils import dict_merge
 from geobricks_downloader.core.filesystem import create_filesystem
 from geobricks_downloader.core.downloads_thread_manager import DownloadsThreadManager
+from geobricks_downloader.config.downloader_config import config
 
 
 class Downloader():
@@ -15,6 +17,7 @@ class Downloader():
     # This can be a string with the target folder or a hierarchical tree
     # e.g. {'target': '/home/kalimaha/Desktop/MODIS', 'product': 'MOD13Q1', 'year': '2014', 'day': '033'}
     filesystem_structure = None
+    target_root = None
 
     # Optional parameters.
     username = None
@@ -27,7 +30,7 @@ class Downloader():
     target_dir = None
     download_manager = None
 
-    def __init__(self, source, file_system_structure, file_paths_and_sizes,
+    def __init__(self, source, target_root, file_system_structure, file_paths_and_sizes,
                  threaded=False, block_size=16384, username=None, password=None):
 
         """
@@ -62,23 +65,26 @@ class Downloader():
         self.source = source.lower()
         self.file_paths_and_sizes = file_paths_and_sizes
         self.file_system_structure = file_system_structure
+        self.target_root = target_root
         self.username = username
         self.password = password
         self.threaded = threaded
         self.block_size = block_size
 
-        # Load configuration
+        # Load datasource specific configuration
         module_name = 'geobricks_' + self.source + '.config.' + self.source + '_config'
         mod = import_module(module_name)
         self.config = getattr(mod, 'config')
 
+        # Merge datasource specific configuration with generic configuration
+        self.config = dict_merge(self.config, config)
+
         # Derive other parameters.
         self.log = log.logger(self.__class__.__name__)
         self.source_type = self.config['source']['type']
-        self.target_dir = file_system_structure
+        self.target_dir = self.target_root
         self.uuid = str(uuid.uuid4())
-        if type(file_system_structure) is DictType:
-            self.target_dir = file_system_structure['target']
+        if file_system_structure is not None:
             self.target_dir = create_filesystem(self.target_dir, self.file_system_structure, self.config)
 
     def download(self):
