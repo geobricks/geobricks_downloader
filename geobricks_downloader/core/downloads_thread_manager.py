@@ -151,6 +151,7 @@ class DownloadThread(Thread):
 
                     progress_map[self.uid][self.file_name]['total_size'] = self.total_size
                     progress_map[self.uid][self.file_name]['download_size'] = 0
+                    progress_map[self.uid][self.file_name]['file_name'] = self.file_name
 
                     if not os.path.isfile(local_file) or os.stat(local_file).st_size < self.total_size:
                         self.log.info(self.file_name + ' download start.')

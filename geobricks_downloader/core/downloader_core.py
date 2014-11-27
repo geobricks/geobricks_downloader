@@ -8,14 +8,14 @@ from geobricks_downloader.core.filesystem import create_filesystem
 from geobricks_downloader.core.downloads_thread_manager import DownloadsThreadManager
 
 
+downloaders_map = {}
+
+
 class Downloader():
 
     # Mandatory parameters.
     source = None
     file_paths_and_sizes = None
-
-    # This can be a string with the target folder or a hierarchical tree
-    # e.g. {'target': '/home/kalimaha/Desktop/MODIS', 'product': 'MOD13Q1', 'year': '2014', 'day': '033'}
     filesystem_structure = None
     target_root = None
 
@@ -25,6 +25,7 @@ class Downloader():
     threaded = False
 
     # Derived parameters.
+    id = None
     source_type = 'FTP'
     config = None
     target_dir = None
@@ -61,6 +62,10 @@ class Downloader():
 
         """
 
+        # Store object
+        self.id = str(uuid.uuid4())
+        downloaders_map[self.id] = self
+
         # Store parameters.
         self.source = source.lower()
         self.file_paths_and_sizes = file_paths_and_sizes
@@ -96,7 +101,15 @@ class Downloader():
     def download(self):
         self.download_manager = DownloadsThreadManager(self.uuid, self.target_dir, self.file_paths_and_sizes, self.threaded)
         self.download_manager.start()
-        return self.download_manager.downloaded_files
+        out = {
+            'id': self.id,
+            'downloaded_files': self.download_manager.downloaded_files
+        }
+        # return self.download_manager.downloaded_files
+        return out
 
     def progress(self, filename):
         return self.download_manager.progress(filename)
+
+    def hallo(self):
+        print 'Hello bitch!'
