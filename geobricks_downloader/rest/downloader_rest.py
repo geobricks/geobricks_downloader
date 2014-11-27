@@ -4,6 +4,7 @@ from flask import Response
 from flask import Blueprint
 from flask.ext.cors import cross_origin
 from geobricks_downloader.core.downloader_core import Downloader
+from geobricks_downloader.core.downloader_core import downloaders_map
 
 
 downloader = Blueprint('download', __name__)
@@ -45,4 +46,11 @@ def download(datasource):
     out = Downloader(datasource, target_root, file_system_structure, layers_to_be_downloaded).download()
 
     # Return the list of downloaded files
+    return Response(json.dumps(out), content_type='application/json; charset=utf-8')
+
+
+@downloader.route('/progress/<downloader_id>/<file_name>/')
+@cross_origin(origins='*', headers=['Content-Type'])
+def progress(downloader_id, file_name):
+    out = downloaders_map[downloader_id].progress(file_name)
     return Response(json.dumps(out), content_type='application/json; charset=utf-8')

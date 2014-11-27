@@ -44,7 +44,7 @@ class DownloadsThreadManager(Thread):
         # Store local file names
         self.downloaded_files = []
         for layer in self.file_paths_and_sizes:
-            self.downloaded_files.append(os.path.join(self.target_dir, layer['file_name']))
+            self.downloaded_files.append(layer['file_name'])
 
     def run(self):
         t = Timer(1, self.start_manager)
