@@ -21,32 +21,6 @@ def discovery():
         'description': 'Geobricks download functionalities and services.',
         'type': 'SERVICE'
     }
-
-    # Filters
-    product = 'MOD13A2'
-    year = '2010'
-    day = '001'
-    country = '8'
-
-    # Get the list of layers through the Geobricks MODIS plug-in
-    layers_to_be_downloaded = [
-        {
-            'file_name': 'my_modis_tile.hdf',
-            'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13Q1/2014/001/MOD13Q1.A2014001.h02v08.005.2014018082809.hdf'
-        }
-    ]
-
-    # Target folder: MODIS layers will be downloaded here
-    target_root = '/home/kalimaha/Desktop/MODIS'
-    target_root = None
-    file_system_structure = {'product': product, 'year': year, 'day': day}
-
-    # Initiate the downloader
-    my_downloader = Downloader('modis', target_root, file_system_structure, layers_to_be_downloaded)
-
-    # Run the downloader
-    print my_downloader.download()
-
     return Response(json.dumps(out), content_type='application/json; charset=utf-8')
 
 
