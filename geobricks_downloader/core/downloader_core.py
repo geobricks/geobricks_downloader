@@ -1,8 +1,6 @@
 import uuid
 
-from importlib import import_module
 from geobricks_downloader.core import log
-from geobricks_downloader.core.utils import dict_merge
 from geobricks_downloader.config.downloader_config import config
 from geobricks_downloader.core.filesystem import create_filesystem
 from geobricks_downloader.core.downloads_thread_manager import DownloadsThreadManager
@@ -76,22 +74,17 @@ class Downloader():
         self.threaded = threaded
         self.block_size = block_size
 
-        # Load datasource specific configuration
-        module_name = 'geobricks_' + self.source + '.config.' + self.source + '_config'
-        mod = import_module(module_name)
-        self.config = getattr(mod, 'config')
-
         # Merge datasource specific configuration with generic configuration
-        self.config = dict_merge(self.config, config)
+        self.config = config['settings']
 
         # Derive other parameters.
         self.log = log.logger(self.__class__.__name__)
-        self.source_type = self.config['source']['type']
         self.target_dir = self.target_root
 
+        # Read target root from common settings, if available
         if self.target_dir is None:
             try:
-                self.target_dir = config['common_settings']['target_root']
+                self.target_dir = self.config['settings']['target_root']
             except KeyError:
                 raise Exception('Please provide the target folder.')
 
@@ -105,11 +98,7 @@ class Downloader():
             'id': self.id,
             'downloaded_files': self.download_manager.downloaded_files
         }
-        # return self.download_manager.downloaded_files
         return out
 
     def progress(self, filename):
         return self.download_manager.progress(filename)
-
-    def hallo(self):
-        print 'Hello bitch!'
