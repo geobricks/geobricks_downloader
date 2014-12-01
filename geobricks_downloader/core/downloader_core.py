@@ -75,7 +75,7 @@ class Downloader():
         self.block_size = block_size
 
         # Merge datasource specific configuration with generic configuration
-        self.config = config['settings']
+        self.config = config
 
         # Derive other parameters.
         self.log = log.logger(self.__class__.__name__)
