@@ -175,6 +175,7 @@ class DownloadThread(Thread):
                     progress_map[self.uid][self.file_name]['status'] = 'COMPLETE'
                     progress_map[self.uid][self.file_name]['progress'] = 100
                     progress_map[self.uid][self.file_name]['download_size'] = self.total_size
+                    progress_map[self.uid][self.file_name]['total_size'] = self.total_size
                     self.log.info(self.file_name + ' download complete.')
 
             else:
@@ -186,6 +187,7 @@ class DownloadThread(Thread):
         return float('{0:.2f}'.format(float(self.download_size) / float(self.total_size) * 100))
 
     def update_progress_map(self):
+        progress_map[self.uid][self.file_name]['total_size'] = self.total_size
         progress_map[self.uid][self.file_name]['download_size'] = self.download_size
         progress_map[self.uid][self.file_name]['progress'] = self.percent_done()
         progress_map[self.uid][self.file_name]['status'] = 'DOWNLOADING'
