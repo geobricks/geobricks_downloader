@@ -43,7 +43,7 @@ def download(datasource):
         pass
 
     # Start the download
-    out = Downloader(datasource, target_root, file_system_structure, layers_to_be_downloaded).download()
+    out = Downloader(datasource, target_root, file_system_structure, layers_to_be_downloaded, threaded=True).download()
 
     # Return the list of downloaded files
     return Response(json.dumps(out), content_type='application/json; charset=utf-8')
