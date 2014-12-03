@@ -177,6 +177,8 @@ class DownloadThread(Thread):
                     progress_map[self.uid][self.file_name]['progress'] = 100
                     progress_map[self.uid][self.file_name]['download_size'] = self.total_size
                     progress_map[self.uid][self.file_name]['total_size'] = self.total_size
+                    progress_map[self.uid][self.file_name]['file_name'] = self.file_name
+                    progress_map[self.uid][self.file_name]['target_dir'] = self.target_dir
                     self.log.info(self.file_name + ' download complete.')
 
             else:
