@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/geobricksdownloader.svg)](http://badge.fury.io/py/geobricksdownloader)
+
 Geobricks Downloader
 ====================
 
