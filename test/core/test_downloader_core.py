@@ -42,3 +42,4 @@ class GeobricksDownloaderTest(unittest.TestCase):
         local_file = os.path.join(local_path, self.local_file_name)
         self.assertTrue(os.path.isfile(local_file))
         self.assertEquals(os.stat(local_file).st_size, 2824180)
+        print 'trigger'
