@@ -1,17 +1,26 @@
 import os
 import unittest
 from geobricks_downloader.core.filesystem import create_filesystem
+from geobricks_downloader.core.filesystem import create_folder
 
 
 class GeobricksFilesystemTest(unittest.TestCase):
 
+    def setUp(self):
+        self.day = '001'
+        self.year = '2015'
+        self.product = 'MOD13A1'
+        self.root = '/tmp'
+        self.structure = {'product': self.product, 'year': self.year, 'day': self.day}
+        self.config = {'settings': {'target_root': None}}
+        self.folder = {'folder_name': '{{tmp}}'}
+
     def test_create_filesystem(self):
-        day = '001'
-        year = '2015'
-        product = 'MOD13A1'
-        root = '/tmp'
-        structure = {'product': product, 'year': year, 'day': day}
-        config = {'settings': {'target_root': None}}
-        create_filesystem(root, structure, config)
-        local_path = os.path.join(root, product, year, day)
+        create_filesystem(self.root, self.structure, self.config)
+        local_path = os.path.join(self.root, self.product, self.year, self.day)
+        self.assertTrue(os.path.exists(local_path))
+
+    def test_create_folder(self):
+        create_folder(self.config, self.structure, self.folder, self.root)
+        local_path = os.path.join(self.root, self.product, self.year, self.day)
         self.assertTrue(os.path.exists(local_path))
