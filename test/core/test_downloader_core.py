@@ -43,4 +43,4 @@ class GeobricksDownloaderTest(unittest.TestCase):
         self.assertTrue(os.path.isfile(local_file))
         actual = os.stat(local_file).st_size
         desired = 2824180
-        self.assertAlmostEqual(float(actual) / float(desired), 0.999, 3)
+        self.assertTrue(float(actual) / float(desired) >= 0.95)
