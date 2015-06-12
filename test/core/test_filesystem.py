@@ -24,3 +24,9 @@ class GeobricksFilesystemTest(unittest.TestCase):
         create_folder(self.config, self.structure, self.folder, self.root)
         local_path = os.path.join(self.root, self.product, self.year, self.day)
         self.assertTrue(os.path.exists(local_path))
+
+    def test_root_does_not_exist(self):
+        root = '/tmp/tmp2'
+        create_filesystem(root, self.structure, self.config)
+        local_path = os.path.join(root, self.product, self.year, self.day)
+        self.assertTrue(os.path.exists(local_path))
