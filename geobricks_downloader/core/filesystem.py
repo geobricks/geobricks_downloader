@@ -29,10 +29,14 @@ def create_filesystem(target_dir, parameters, data_provider_conf):
 
     # Otherwise create the file system according to the user parameters
     except KeyError:
-        for key in parameters:
-            final_path = os.path.join(final_path, parameters[key])
-            if not os.path.exists(final_path):
-                os.makedirs(final_path)
+        keys = ['product', 'year', 'day']
+        for key in keys:
+            try:
+                final_path = os.path.join(final_path, parameters[key])
+                if not os.path.exists(final_path):
+                    os.makedirs(final_path)
+            except KeyError:
+                pass
 
     return final_path
 

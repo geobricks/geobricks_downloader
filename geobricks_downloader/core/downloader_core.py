@@ -92,7 +92,10 @@ class Downloader():
         self.uuid = str(uuid.uuid4())
 
     def download(self):
-        self.download_manager = DownloadsThreadManager(self.uuid, self.target_dir, self.file_paths_and_sizes, self.threaded)
+        self.download_manager = DownloadsThreadManager(self.uuid,
+                                                       self.target_dir,
+                                                       self.file_paths_and_sizes,
+                                                       self.threaded)
         self.download_manager.start()
         out = {
             'id': self.id,
