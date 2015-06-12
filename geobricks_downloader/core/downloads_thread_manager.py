@@ -88,7 +88,7 @@ class DownloadsThreadManager(Thread):
     def progress(self, filename):
         try:
             return progress_map[self.uid][filename]
-        except KeyError, e:
+        except KeyError:
             pass
 
 
