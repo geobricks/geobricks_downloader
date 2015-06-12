@@ -11,6 +11,8 @@ class GeobricksDownloaderRestTest(unittest.TestCase):
         self.app.register_blueprint(downloader, url_prefix='/download')
         self.tester = self.app.test_client(self)
         self.local_file_name = 'test.hdf'
+        self.local_file_name_1 = 'test_1.hdf'
+        self.local_file_name_2 = 'test_2.hdf'
         self.day = '001'
         self.year = '2015'
         self.product = 'MOD13A1'
@@ -29,7 +31,8 @@ class GeobricksDownloaderRestTest(unittest.TestCase):
                                             {
                                                 'file_name': self.local_file_name,
                                                 'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13A1/2015/001/'
-                                                             'MOD13A1.A2015001.h13v08.005.2015027153318.hdf'}
+                                                             'MOD13A1.A2015001.h13v08.005.2015027153318.hdf'
+                                            }
                                         ],
                                         'file_system_structure': {
                                             'product': self.product,
@@ -48,7 +51,8 @@ class GeobricksDownloaderRestTest(unittest.TestCase):
                                             {
                                                 'file_name': self.local_file_name,
                                                 'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13A1/2015/001/'
-                                                             'MOD13A1.A2015001.h13v08.005.2015027153318.hdf'}
+                                                             'MOD13A1.A2015001.h13v08.005.2015027153318.hdf'
+                                            }
                                         ],
                                         'file_system_structure': {
                                             'non_valid_key': self.product,
@@ -58,3 +62,31 @@ class GeobricksDownloaderRestTest(unittest.TestCase):
                                     }),
                                     content_type='application/json')
         json.loads(response.data)
+
+    def test_download_multiple_files(self):
+        response = self.tester.post('/download/modis/',
+                                    data=json.dumps({
+                                        'target_root': '/tmp',
+                                        'layers_to_be_downloaded': [
+                                            {
+                                                'file_name': self.local_file_name_1,
+                                                'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13A1/2015/001/'
+                                                             'MOD13A1.A2015001.h13v08.005.2015027153318.hdf'
+                                            },
+                                            {
+                                                'file_name': self.local_file_name_2,
+                                                'file_path': 'ftp://ladsweb.nascom.nasa.gov/allData/5/MOD13A1/2015/001/'
+                                                             'MOD13A1.A2015001.h13v01.005.2015027152312.hdf'
+                                            }
+                                        ],
+                                        'file_system_structure': {
+                                            'product': self.product,
+                                            'year': self.year,
+                                            'day': self.day
+                                        }
+                                    }),
+                                    content_type='application/json')
+        out = json.loads(response.data)
+        self.assertEquals(out['downloaded_files'][0], 'test_1.hdf')
+        self.assertEquals(out['downloaded_files'][1], 'test_2.hdf')
+        self.assertEquals(len(out['downloaded_files']), 2)
