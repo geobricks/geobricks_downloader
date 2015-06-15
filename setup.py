@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name='GeobricksDownloader',
-    version='0.1.2',
+    version='0.1.3',
     author='Simone Murzilli; Guido Barbaglia',
     author_email='geobrickspy@gmail.com',
     packages=find_packages(),
@@ -11,7 +11,9 @@ setup(
     long_description=open('README.md').read(),
     description='Core functionalities for geospatial data download.',
     install_requires=[
-        'flask'
+        'watchdog',
+        'flask',
+        'flask-cors'
     ],
     url='http://pypi.python.org/pypi/GeobricksDownloader/'
 )

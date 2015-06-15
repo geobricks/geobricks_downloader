@@ -57,7 +57,8 @@ class DownloadsThreadManager(Thread):
         self.log.info('Downloads Thread Manager started.')
 
         if self.threaded is True:
-            thread_list = ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo', 'Foxtrot', 'Golf', 'Hotel', 'India', 'Juliet']
+            # thread_list = ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo', 'Foxtrot', 'Golf', 'Hotel', 'India', 'Juliet']
+            thread_list = ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo']
         else:
             thread_list = ['Alpha']
 
