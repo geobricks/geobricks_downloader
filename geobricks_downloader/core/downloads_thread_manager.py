@@ -134,53 +134,61 @@ class DownloadThread(Thread):
 
                 local_file = os.path.join(self.target_dir, self.file_name)
 
-                u = urllib2.urlopen(self.file_path)
-                meta = u.info()
-                self.total_size = int(meta.getheaders('Content-Length')[0])
-
-                # Download the file only if its size is different from the one on the FTP
-                allow_layer_download = True
                 try:
-                    allow_layer_download = int(os.stat(local_file).st_size) < int(self.total_size)
-                except OSError:
-                    pass
-
-                if allow_layer_download:
 
                     u = urllib2.urlopen(self.file_path)
-                    f = open(local_file, 'wb')
 
-                    progress_map[self.uid][self.file_name]['total_size'] = self.total_size
-                    progress_map[self.uid][self.file_name]['download_size'] = 0
-                    progress_map[self.uid][self.file_name]['file_name'] = self.file_name
-                    progress_map[self.uid][self.file_name]['target_dir'] = self.target_dir
+                    meta = u.info()
+                    self.total_size = int(meta.getheaders('Content-Length')[0])
 
-                    if not os.path.isfile(local_file) or os.stat(local_file).st_size < self.total_size:
-                        self.log.info(self.file_name + ' download start.')
-                        file_size_dl = 0
-                        while self.download_size < self.total_size:
-                            chunk = u.read(self.block_sz)
-                            if not buffer:
-                                break
-                            file_size_dl += len(chunk)
-                            f.write(chunk)
-                            self.download_size += len(chunk)
-                            self.update_progress_map()
-                            if float(self.download_size) == float(self.total_size):
-                                break
+                    # Download the file only if its size is different from the one on the FTP
+                    allow_layer_download = True
+                    try:
+                        allow_layer_download = int(os.stat(local_file).st_size) < int(self.total_size)
+                    except OSError:
+                        pass
 
-                    progress_map[self.uid][self.file_name]['status'] = 'COMPLETE'
-                    self.log.info(self.file_name + ' download complete.')
-                    f.close()
+                    if allow_layer_download:
 
-                else:
-                    progress_map[self.uid][self.file_name]['status'] = 'COMPLETE'
-                    progress_map[self.uid][self.file_name]['progress'] = 100
-                    progress_map[self.uid][self.file_name]['download_size'] = self.total_size
-                    progress_map[self.uid][self.file_name]['total_size'] = self.total_size
-                    progress_map[self.uid][self.file_name]['file_name'] = self.file_name
-                    progress_map[self.uid][self.file_name]['target_dir'] = self.target_dir
-                    self.log.info(self.file_name + ' download complete.')
+                        u = urllib2.urlopen(self.file_path)
+                        f = open(local_file, 'wb')
+
+                        progress_map[self.uid][self.file_name]['total_size'] = self.total_size
+                        progress_map[self.uid][self.file_name]['download_size'] = 0
+                        progress_map[self.uid][self.file_name]['file_name'] = self.file_name
+                        progress_map[self.uid][self.file_name]['target_dir'] = self.target_dir
+
+                        if not os.path.isfile(local_file) or os.stat(local_file).st_size < self.total_size:
+                            self.log.info(self.file_name + ' download start.')
+                            file_size_dl = 0
+                            while self.download_size < self.total_size:
+                                chunk = u.read(self.block_sz)
+                                if not buffer:
+                                    break
+                                file_size_dl += len(chunk)
+                                f.write(chunk)
+                                self.download_size += len(chunk)
+                                self.update_progress_map()
+                                if float(self.download_size) == float(self.total_size):
+                                    break
+
+                        progress_map[self.uid][self.file_name]['status'] = 'COMPLETE'
+                        self.log.info(self.file_name + ' download complete.')
+                        f.close()
+
+                    else:
+                        progress_map[self.uid][self.file_name]['status'] = 'COMPLETE'
+                        progress_map[self.uid][self.file_name]['progress'] = 100
+                        progress_map[self.uid][self.file_name]['download_size'] = self.total_size
+                        progress_map[self.uid][self.file_name]['total_size'] = self.total_size
+                        progress_map[self.uid][self.file_name]['file_name'] = self.file_name
+                        progress_map[self.uid][self.file_name]['target_dir'] = self.target_dir
+                        self.log.info(self.file_name + ' download complete.')
+
+                except Exception, e:
+                    print 'urlopen error: ' + self.file_path
+                    print e
+                    pass
 
             else:
                 self.queue_lock.release()
